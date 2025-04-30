@@ -1,0 +1,13 @@
+.ajust {
+  display: flex;
+  justify-content: flex-end;
+
+}
+
+
+@media (max-width: 768px) {
+  .ajust {
+    display: none !important;
+  }
+    
+}
