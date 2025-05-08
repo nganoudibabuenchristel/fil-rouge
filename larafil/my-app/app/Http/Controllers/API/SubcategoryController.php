@@ -21,6 +21,7 @@ class SubcategoryController extends Controller
     public function index(Request $request)
     {
         $query = Subcategory::query();
+        Log::error('Une erreur est survenue');
         
         if ($request->has('category_id')) {
             $query->where('category_id', $request->category_id);
@@ -50,7 +51,7 @@ class SubcategoryController extends Controller
      * @param Category $category
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function byCategory(Category $category)
+    public function getByCategory(Category $category)
     {
         $subcategories = $category->subcategories;
         

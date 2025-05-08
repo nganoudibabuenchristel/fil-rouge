@@ -13,6 +13,8 @@ use App\Models\FurnitureListing;
 use App\Models\ListingView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 /**
  * @OA\Tag(
@@ -195,8 +197,10 @@ class FurnitureListingController extends Controller
      */
     public function store(StoreFurnitureListingRequest $request)
     {
+
+        Log::info($request);
         $validated = $request->validated();
-        $validated['user_id'] = Auth::id();
+        Log::info($request);
         
         $listing = FurnitureListing::create($validated);
         

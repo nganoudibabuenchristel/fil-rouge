@@ -1,7 +1,7 @@
-// DashboardPage.jsx
+// DashboardPage.jsx - Version corrigée
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../api/axiosConfig';
 import { useQuery } from '@tanstack/react-query';
 
 /**
@@ -34,12 +34,17 @@ const DashboardPage = () => {
   const { data: myListings, isLoading: loadingListings } = useQuery({
     queryKey: ['myListings', user?.id],
     queryFn: async () => {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/api/me/listings', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      console.log("voici mes annonces", data)
-      return response.data;
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('/listings', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        console.log("voici mes annonces", response); // Correction: response.data au lieu de data
+        return response.data;
+      } catch (error) {
+        console.error("Erreur lors du chargement des annonces:", error);
+        throw error;
+      }
     },
     enabled: !!user
   });
@@ -48,11 +53,16 @@ const DashboardPage = () => {
   const { data: favorites, isLoading: loadingFavorites } = useQuery({
     queryKey: ['favorites', user?.id],
     queryFn: async () => {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/api/me/favorites', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      return response.data;
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('/api/me/favorites', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+      } catch (error) {
+        console.error("Erreur lors du chargement des favoris:", error);
+        throw error;
+      }
     },
     enabled: !!user
   });
@@ -87,13 +97,13 @@ const DashboardPage = () => {
       
       <div className="flex mb-6">
         <button 
-          className={`px-4 py-2 mr-2 rounded-t-md ${activeTab === 'myListings' ? 'bg-blue-100 border-b-2 border-blue-600' : 'bg-gray-100'}`}
+          className={`px-4 py-2 mr-2 rounded-t-md ${activeTab === 'myListings' ? 'bg-yellow-100 border-b-2 border-yellow-600' : 'bg-gray-100'}`}
           onClick={() => setActiveTab('myListings')}
         >
           Mes annonces
         </button>
         <button 
-          className={`px-4 py-2 rounded-t-md ${activeTab === 'favorites' ? 'bg-blue-100 border-b-2 border-blue-600' : 'bg-gray-100'}`}
+          className={`px-4 py-2 rounded-t-md ${activeTab === 'favorites' ? 'bg-yellow-100 border-b-2 border-yellow-600' : 'bg-gray-100'}`}
           onClick={() => setActiveTab('favorites')}
         >
           Mes favoris
@@ -104,15 +114,16 @@ const DashboardPage = () => {
         <div className="bg-white p-4 rounded-md shadow">
           <div className="flex justify-between mb-4">
             <h2 className="text-xl font-semibold">Mes annonces</h2>
-            <Link to="/create-listing" className="bg-blue-600 text-white px-4 py-2 rounded-md">
+            <Link to="/listings/create" className="bg-yellow-600 text-white px-4 py-2 rounded-md">
               Créer une annonce
             </Link>
           </div>
 
           {loadingListings ? (
             <p>Chargement...</p>
-          ) : myListings?.length > 0 ? (
+          ) : myListings && myListings.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Correction: vérifier si myListings existe et utiliser directement myListings au lieu de myListings.data */}
               {myListings.data.map(listing => ( 
                 <div key={listing.id} className="border rounded-md p-4">
                   <div className="h-40 bg-gray-200 mb-2 relative">
@@ -130,12 +141,12 @@ const DashboardPage = () => {
                     </span>
                   </div>
                   <h3 className="font-semibold mb-1">{listing.title}</h3>
-                  <p className="text-blue-600 font-semibold mb-2">{listing.price} €</p>
+                  <p className="text-yellow-600 font-semibold mb-2">{listing.price} €</p>
                   <div className="flex mt-2">
                     <Link to={`/edit-listing/${listing.id}`} className="text-sm bg-gray-200 px-3 py-1 rounded-md mr-2">
                       Modifier
                     </Link>
-                    <Link to={`/listing/${listing.id}`} className="text-sm bg-blue-600 text-white px-3 py-1 rounded-md">
+                    <Link to={`/listing/${listing.id}`} className="text-sm bg-yellow-600 text-white px-3 py-1 rounded-md">
                       Voir
                     </Link>
                   </div>
@@ -145,7 +156,7 @@ const DashboardPage = () => {
           ) : (
             <div className="text-center py-8">
               <p className="mb-4">Vous n'avez pas encore d'annonces</p>
-              <Link to="/create-listing" className="bg-blue-600 text-white px-4 py-2 rounded-md">
+              <Link to="/create-listing" className="bg-yellow-600 text-white px-4 py-2 rounded-md">
                 Créer ma première annonce
               </Link>
             </div>
@@ -159,7 +170,7 @@ const DashboardPage = () => {
 
           {loadingFavorites ? (
             <p>Chargement...</p>
-          ) : favorites?.length > 0 ? (
+          ) : favorites && favorites.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {favorites.map(listing => (
                 <div key={listing.id} className="border rounded-md p-4">
@@ -173,12 +184,12 @@ const DashboardPage = () => {
                     )}
                   </div>
                   <h3 className="font-semibold mb-1">{listing.title}</h3>
-                  <p className="text-blue-600 font-semibold mb-2">{listing.price} €</p>
+                  <p className="text-yellow-600 font-semibold mb-2">{listing.price} €</p>
                   <div className="flex mt-2">
                     <button className="text-sm bg-red-100 text-red-600 px-3 py-1 rounded-md mr-2">
                       Retirer des favoris
                     </button>
-                    <Link to={`/listing/${listing.id}`} className="text-sm bg-blue-600 text-white px-3 py-1 rounded-md">
+                    <Link to={`/listing/${listing.id}`} className="text-sm bg-yellow-600 text-white px-3 py-1 rounded-md">
                       Voir
                     </Link>
                   </div>
@@ -188,7 +199,7 @@ const DashboardPage = () => {
           ) : (
             <div className="text-center py-8">
               <p className="mb-4">Vous n'avez pas encore de favoris</p>
-              <Link to="/" className="bg-blue-600 text-white px-4 py-2 rounded-md">
+              <Link to="/" className="bg-yellow-600 text-white px-4 py-2 rounded-md">
                 Parcourir les annonces
               </Link>
             </div>

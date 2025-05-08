@@ -51,7 +51,7 @@ const Header = () => {
     <header className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
-          <Link to="/" className="text-2xl font-bold text-blue-500">HomeFit</Link>
+          <Link to="/" className="text-2xl font-bold text-yellow-500">HomeFit</Link>
 
           {/* Navigation principale */}
           <nav className="ajust flex-grow mx-8">
@@ -59,9 +59,9 @@ const Header = () => {
               <input
                 type="text"
                 placeholder="Rechercher des meubles..."
-                className="w-full py-2 px-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="w-full py-2 px-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-300"
               />
-              <button className="absolute right-3 top-2 text-blue-500">
+              <button className="absolute right-3 top-2 text-yellow-200 hover:text-yellow-500">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -69,14 +69,14 @@ const Header = () => {
             </div>
             {isAuthenticated ? (
               <>
-                <Link to="/favorites" className="text-gray-600 hover:text-blue-500">
+                <Link to="/favorites" className="text-gray-600 hover:text-yellow-300">
                   <HeartIcon className="w-6 h-6" />
                 </Link>
 
                 <div className="relative">
                   <button
                     onClick={() => setNotificationsOpen(!notificationsOpen)}
-                    className="text-gray-600 hover:text-blue-500"
+                    className="text-gray-600 hover:text-yellow-500"
                   >
                     <BellIcon className="w-6 h-6" />
                     {currentUser?.unread_notifications_count > 0 && (
@@ -92,21 +92,21 @@ const Header = () => {
                 <div className="relative" ref={accountMenuRef}>
                   <button
                     onClick={() => setIsAccountMenuOpen(prev => !prev)}
-                    className="flex items-center space-x-1 text-gray-600 hover:text-blue-500"
+                    className="flex items-center space-x-1 text-gray-600 hover:text-yellow-500"
                   >
                     <UserIcon className="w-6 h-6" />
                     <span>{currentUser?.name || 'Mon compte'}</span>
                   </button>
                   {isAccountMenuOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                      <Link to="/dashboard" className="block px-4 py-2 text-gray-700 hover:bg-blue-50">Tableau de bord</Link>
-                      <Link to="/listings/create" className="block px-4 py-2 text-gray-700 hover:bg-blue-50">Créer une annonce</Link>
+                      <Link to="/dashboard" className="block px-4 py-2 text-gray-700 hover:bg-yellow-50">Tableau de bord</Link>
+                      <Link to="/listings/create" className="block px-4 py-2 text-gray-700 hover:bg-yellow-50">Créer une annonce</Link>
                       <button
                         onClick={() => {
                           handleLogout();
                           setIsAccountMenuOpen(false);
                         }}
-                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-blue-50"
+                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-yellow-50"
                       >
                         Déconnexion
                       </button>
@@ -116,9 +116,9 @@ const Header = () => {
               </>
             ) : (
               <>
-                Bonjour tout le monde
-                <Link to="/login" className="text-gray-600 hover:text-blue-500">Connexion</Link>
-                <Link to="/register" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Inscription</Link>
+                
+                <Link to="/login" className="text-gray-600 hover:text-yellow-500 ">Connexion</Link>
+                <Link to="/register" className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600">Inscription</Link>
               </>
             )}
           </nav>

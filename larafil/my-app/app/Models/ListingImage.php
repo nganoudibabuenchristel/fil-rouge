@@ -17,6 +17,7 @@ class ListingImage extends Model
      */
     protected $fillable = [
         'furniture_listing_id',
+        'file_name',
         'image_path',
         'is_primary',
         'sort_order',

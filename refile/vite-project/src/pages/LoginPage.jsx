@@ -21,6 +21,7 @@ const LoginPage = () => {
       
       // Stocker les informations de l'utilisateur dans localStorage
       localStorage.setItem('user', JSON.stringify(data.data.user));
+      localStorage.setItem('user_id', JSON.stringify(data.data.user.id));
       console.log('User data:', data.data.access_token);
       
       // Si vous avez un token d'authentification
@@ -98,7 +99,7 @@ const LoginPage = () => {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                   Se souvenir de moi
@@ -106,7 +107,7 @@ const LoginPage = () => {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+                <a href="#" className="font-medium text-yellow-600 hover:text-yelow-500">
                   Mot de passe oublié?
                 </a>
               </div>
@@ -116,7 +117,7 @@ const LoginPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 disabled:opacity-50"
               >
                 {loading ? 'Connexion en cours...' : 'Se connecter'}
               </button>
@@ -134,7 +135,7 @@ const LoginPage = () => {
             </div>
 
             <div className="mt-6 text-center">
-              <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
+              <Link to="/register" className="font-medium text-yellow-600 hover:text-yellow-500">
                 Créer un nouveau compte
               </Link>
             </div>

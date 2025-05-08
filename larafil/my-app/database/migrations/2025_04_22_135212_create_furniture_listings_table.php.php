@@ -36,3 +36,47 @@ return new class extends Migration
         Schema::dropIfExists('furniture_listings');
     }
 };
+
+class AddCityIdToFurnitureListingsTable extends Migration
+{
+    /**
+     * Exécuter les migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('furniture_listings', function (Blueprint $table) {
+            // Ajouter la colonne city_id qui fait référence à la table cities
+            $table->unsignedBigInteger('city_id')->nullable()->after('condition_id');
+            
+            // Ajouter la contrainte de clé étrangère
+            $table->foreign('city_id')
+                ->references('id')
+                ->on('cities')
+                ->onDelete('set null'); // Si une ville est supprimée, conserver l'annonce mais mettre city_id à null
+            
+            // Ajouter un index pour améliorer les performances de requête
+            $table->index('city_id');
+        });
+    }
+
+    /**
+     * Inverser les migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('furniture_listings', function (Blueprint $table) {
+            // Supprimer la contrainte de clé étrangère
+            $table->dropForeign(['city_id']);
+            
+            // Supprimer l'index
+            $table->dropIndex(['city_id']);
+            
+            // Supprimer la colonne
+            $table->dropColumn('city_id');
+        });
+    }
+}

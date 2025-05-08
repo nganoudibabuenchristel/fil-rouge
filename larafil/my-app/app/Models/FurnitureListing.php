@@ -5,6 +5,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use App\Models\User;
+
+
 
 class FurnitureListing extends Model
 {
@@ -25,7 +29,7 @@ class FurnitureListing extends Model
         'description',
         'price',
         'is_negotiable',
-        'city',
+        'city_id',
         'address',
         'latitude',
         'longitude',
@@ -158,4 +162,14 @@ class FurnitureListing extends Model
         
         return 'https://wa.me/' . $phone . '?text=' . urlencode($message);
     }
+
+    protected static function booted()
+{
+    static::creating(function ($listing) {
+        if (empty($listing->slug)) {
+            $listing->slug = Str::slug($listing->title);
+        }
+    });
+}
+
 }

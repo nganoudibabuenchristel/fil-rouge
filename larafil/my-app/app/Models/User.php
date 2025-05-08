@@ -59,6 +59,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+
+    protected $table = 'users';  // <--- ajoute ça pour forcer Laravel à chercher la table 'users'
     use HasApiTokens, HasFactory, Notifiable;
 
     /**

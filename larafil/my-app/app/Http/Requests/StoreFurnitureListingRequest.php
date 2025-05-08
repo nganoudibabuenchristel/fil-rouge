@@ -51,6 +51,7 @@ class StoreFurnitureListingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => ['required', 'exists:users,id'],
             'category_id' => ['required', 'exists:categories,id'],
             'subcategory_id' => [
                 'required', 
@@ -67,7 +68,7 @@ class StoreFurnitureListingRequest extends FormRequest
             'description' => ['required', 'string', 'min:20'],
             'price' => ['required', 'numeric', 'min:0'],
             'is_negotiable' => ['boolean'],
-            'city' => ['required', 'string', 'max:100'],
+            'city_id' => ['required', 'exists:cities,id'],
             'address' => ['nullable', 'string', 'max:255'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],

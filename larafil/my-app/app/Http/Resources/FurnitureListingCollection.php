@@ -1,25 +1,5 @@
 <?php
 
-// namespace App\Http\Resources;
-
-// use Illuminate\Http\Request;
-// use Illuminate\Http\Resources\Json\JsonResource;
-
-// class FurnitureListingCollection extends JsonResource
-// {
-//     /**
-//      * Transform the resource into an array.
-//      *
-//      * @return array<string, mixed>
-//      */
-//     public function toArray(Request $request): array
-//     {
-//         return parent::toArray($request);
-//     }
-// }
-
-// app/Http/Resources/FurnitureListingCollection.php
-
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
@@ -30,23 +10,25 @@ class FurnitureListingCollection extends ResourceCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @return array<string, mixed>
+     * @param  Request  $request
+     * @return array
      */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
         return [
             'data' => $this->collection,
             'meta' => [
-                'current_page' => $this->currentPage(),
-                'last_page' => $this->lastPage(),
-                'per_page' => $this->perPage(),
-                'total' => $this->total(),
+                'total' => $this->resource->total(),
+                'count' => $this->resource->count(),
+                'per_page' => $this->resource->perPage(),
+                'current_page' => $this->resource->currentPage(),
+                'total_pages' => $this->resource->lastPage(),
             ],
             'links' => [
-                'first' => $this->url(1),
-                'last' => $this->url($this->lastPage()),
-                'prev' => $this->previousPageUrl(),
-                'next' => $this->nextPageUrl(),
+                'first' => $this->resource->url(1),
+                'last' => $this->resource->url($this->resource->lastPage()),
+                'prev' => $this->resource->previousPageUrl(),
+                'next' => $this->resource->nextPageUrl(),
             ],
         ];
     }
